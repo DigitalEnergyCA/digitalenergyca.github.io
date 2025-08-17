@@ -336,91 +336,40 @@
             <p style="margin-bottom: 1.5rem; color: #7f8c8d;">Below is a Mermaid diagram modeled after IBM's MCP Context Forge reference, adapted for an upstream oil & gas environment (SCADA, measurement, production accounting, maintenance, and market data).</p>
             <div class="mermaid-container">
                 <pre class="mermaid">
-graph TD
-    subgraph Clients[🖥️ Clients and Agents]
-        IDE[Claude Desktop / Copilot / Continue]
-        Notebooks[Jupyter / VS Code]
-        Chat[OpenWebUI / Internal Chat]
-        Orchestrators[n8n / Airflow / Dagster]
-        BI[Power BI / Grafana]
-        Agents[LangChain / CrewAI]
+flowchart LR
+    Clients[Clients] --> Gateway[MCP Gateway]
+    Gateway --> Systems[Oil Gas Systems]
+    
+    subgraph C[Client Layer]
+        C1[Claude Desktop]
+        C2[VS Code]
+        C3[Jupyter]
+        C4[n8n]
     end
-
-    subgraph UI_and_Auth[🔐 UI and Access]
-        AdminUI[Admin UI]
-        Auth[Auth - JWT + OIDC]
-        Policy[OPA Policies]
-        AdminUI --> Core
-        Auth --> Core
-        Policy --> Core
+    
+    subgraph G[Gateway Core]
+        G1[Auth]
+        G2[Registry]
+        G3[Protocol]
+        G4[Federation]
     end
-
-    subgraph Gateway_Core[🚪 MCP Gateway Core]
-        Core[Gateway Core]
-        Registry[MCP Registry]
-        Protocol[Protocol Conversion]
-        Federation[Federation Manager]
-        Core --> Registry
-        Core --> Protocol
-        Core --> Federation
+    
+    subgraph S[Systems]
+        S1[SCADA]
+        S2[PI Historian]
+        S3[SAP]
+        S4[FLOWCAL]
     end
-
-    subgraph Services[🧰 Service Layer]
-        Tools[Tool Service]
-        Resources[Resource Service]
-        Prompts[Prompt Service]
-        Servers[Server Service]
-        Core --> Tools
-        Core --> Resources
-        Core --> Prompts
-        Core --> Servers
-    end
-
-    subgraph OT_Systems[⚙️ OT/Field Systems]
-        SCADA[SCADA/PLC - OPC UA]
-        EFM[Flow Computers]
-        Historians[PI System / Canary]
-        Edge[Edge Gateways]
-    end
-
-    subgraph IT_Systems[💼 IT/Enterprise]
-        ERP[SAP S/4HANA]
-        Maint[Maximo]
-        PA[Production Accounting]
-        LIMS[Lab Systems]
-    end
-
-    subgraph Data_Cloud[☁️ Cloud and Data]
-        Lake[Data Lake]
-        Stream[Kafka Streams]
-        ML[Model Serving]
-        Market[Market Data]
-    end
-
-    subgraph Persistence[💾 Storage]
-        DB[SQL Database]
-        Cache[Redis Cache]
-        Tools --> DB
-        Resources --> DB
-        Core --> Cache
-    end
-
-    IDE --> Protocol
-    Notebooks --> Protocol
-    Chat --> Protocol
-    Agents --> Protocol
-    BI --> Protocol
-    Orchestrators --> Protocol
-
-    Federation --> SCADA
-    Federation --> EFM
-    Federation --> Historians
-    Federation --> ERP
-    Federation --> Maint
-    Federation --> PA
-    Federation --> Lake
-    Federation --> Stream
-    Federation --> ML
+    
+    C1 --> Gateway
+    C2 --> Gateway
+    C3 --> Gateway
+    C4 --> Gateway
+    
+    Gateway --> S1
+    Gateway --> S2
+    Gateway --> S3
+    Gateway --> S4
                 </pre>
             </div>
             <div style="margin-top: 1.5rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; color: #34495e; font-size: 0.9rem;">
