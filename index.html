@@ -456,7 +456,7 @@ flowchart TD
 
   %% Orchestrators also act as clients and tools
   Orchestrators --> Proto
-  Orchestrators -. expose as tools .-> MCPServers
+  Orchestrators -.->|expose as tools| MCPServers
                 </div>
             </div>
             <div style="margin-top: 1.5rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; color: #34495e; font-size: 0.9rem;">
@@ -658,14 +658,12 @@ curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..." \
         </div>
     </div>
     
-    <!-- Mermaid loader (place before </body>) -->
     <script type="module">
       import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
       mermaid.initialize({
         startOnLoad: true,
         theme: "neutral",
-        securityLevel: "loose",      // allow \n in labels and basic HTML if needed
-        logLevel: "fatal"
+        securityLevel: "loose"
       });
     </script>
 </body>
