@@ -270,6 +270,21 @@
             margin: 0 auto;
             padding: 2rem 3rem;
         }
+        
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 1rem;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+        }
 
         @media (max-width: 768px) {
             .container {
@@ -532,30 +547,24 @@ flowchart TD
 
         <div class="feature-card" id="quick-start">
             <h3>Quick Start</h3>
-            <div style="margin-bottom: 1rem;">
-```bash
-# Install via Docker
-docker pull digitalenergy/mcp-gateway:latest
-docker run -d -p 8080:8080 digitalenergy/mcp-gateway
-
-# Or using Docker Compose
-curl -O https://digitalenergyca.github.io/docker-compose.yml
-docker-compose up -d
-```
-            </div>
+            <p><strong>Install via Docker</strong></p>
+            <pre><code class="language-bash">docker pull digitalenergy/mcp-gateway:latest
+docker run -d -p 8080:8080 digitalenergy/mcp-gateway</code></pre>
+            
+            <p><strong>Or using Docker Compose</strong></p>
+            <pre><code class="language-bash">curl -O https://digitalenergyca.github.io/docker-compose.yml
+docker-compose up -d</code></pre>
             
             <h4 style="margin-top: 2rem; margin-bottom: 1rem; color: #2c3e50;">Authentication Example</h4>
-```bash
-# JWT Authentication
+            <pre><code class="language-bash"># JWT Authentication
 curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..." \
-     https://gateway.digitalenergy.ca/mcp/tools
-
-# 401 Unauthorized Response
-{
+     https://gateway.digitalenergy.ca/mcp/tools</code></pre>
+     
+            <p><strong>401 Unauthorized Response</strong></p>
+            <pre><code class="language-json">{
   "error": "invalid_token",
   "message": "JWT token expired or invalid"
-}
-```
+}</code></pre>
         </div>
 
         <div class="deployment-table">
