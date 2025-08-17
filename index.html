@@ -707,8 +707,25 @@ curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..." \
       mermaid.initialize({
         startOnLoad: true,
         securityLevel: "loose",
-        theme: "neutral",
-        flowchart: { curve: "basis", useMaxWidth: true }
+        theme: "base",
+        themeVariables: {
+          fontFamily: "Inter, Segoe UI, Arial, sans-serif",
+          primaryColor: "#f4f6f8",     
+          primaryBorderColor: "#d3d7db",
+          primaryTextColor: "#1a1a1a",
+          secondaryColor: "#e0e7ef",   
+          tertiaryColor: "#cce0f5",    
+          lineColor: "#6b7280",
+          clusterBkg: "#f9fafb",
+          clusterBorder: "#9ca3af",
+          edgeLabelBackground: "#ffffff",
+          nodeBorderRadius: "8px"
+        },
+        flowchart: {
+          curve: "basis",
+          useMaxWidth: true,
+          padding: 15
+        }
       });
     </script>
 </body>
