@@ -337,84 +337,75 @@
             <div class="mermaid-container">
                 <pre class="mermaid">
 graph TD
-    subgraph Clients
-        IDE[IDE Assistants]
-        Notebooks[Jupyter/VS Code]
-        Chat[OpenWebUI]
-        Orchestrators[n8n/Airflow]
-        BI[Power BI/Grafana]
-        Agents[LangChain/CrewAI]
-    end
-
-    subgraph UI_and_Auth
-        UI[Admin UI]
-        Auth[Auth JWT/OIDC]
-        Policy[OPA Policies]
+    subgraph UI_and_Auth["🔐 UI and Access Control"]
+        UI["🖥️ Admin UI"]
+        Auth["🔐 Auth - JWT and Basic"]
         UI --> Core
         Auth --> Core
-        Policy --> Core
     end
 
-    subgraph Gateway_Core
-        Core[MCP Gateway Core]
-        Registry[MCP Registry]
-        Protocol[Protocol Conversion]
-        Federation[Federation Manager]
-        Transports[HTTP/WS/SSE/stdio]
-        Core --> Registry
+    subgraph Gateway_Core["🚪 MCP Gateway Core"]
+        Core["🚪 MCP Gateway Core"]
+        Protocol["📡 Protocol - Init Ping Completion"]
+        Federation["🌐 Federation Manager"]
+        Transports["🔀 Transports - HTTP WS SSE Stdio"]
         Core --> Protocol
         Core --> Federation
         Core --> Transports
     end
 
-    subgraph Services
-        Tools[Tool Service]
-        Resources[Resource Service]
-        Prompts[Prompt Service]
-        Servers[Server Service]
+    subgraph Services["🧰 Services"]
+        Tools["🧰 Tool Service"]
+        Resources["📁 Resource Service"]
+        Prompts["📝 Prompt Service"]
+        Servers["🧩 Server Service"]
         Core --> Tools
         Core --> Resources
         Core --> Prompts
         Core --> Servers
     end
 
-    subgraph OT_Field
-        SCADA[SCADA/PLC OPC UA]
-        EFM[Flow Computers]
-        Historians[PI System/Canary]
-        Edge[Kepware/HiveMQ]
+    subgraph OT_Systems["⚙️ OT/Field Systems"]
+        SCADA["📊 SCADA/PLC - OPC UA"]
+        Historians["📈 PI System/Canary"]
+        EFM["⚡ Flow Computers - ROCs"]
+        Edge["🌐 Edge - Kepware/HiveMQ"]
     end
 
-    subgraph IT_Enterprise
-        ERP[SAP S/4HANA]
-        Maint[Maximo]
-        PA[FLOWCAL/ProdView]
-        LIMS[Lab Systems]
-        Docs[WellView/OpenWells]
+    subgraph IT_Systems["💼 IT/Enterprise"]
+        ERP["💼 SAP S/4HANA"]
+        Maint["🔧 Maximo"]
+        PA["📊 FLOWCAL/ProdView"]
+        LIMS["🧪 Lab Systems"]
     end
 
-    subgraph Cloud_Data
-        Lake[Data Lake S3/ADLS]
-        Stream[Kafka/Kinesis]
-        ML[SageMaker/Bedrock]
-        Market[EIA/AER Data]
+    subgraph Cloud_Data["☁️ Cloud and Data"]
+        Lake["💾 Data Lake - S3/ADLS"]
+        Stream["🌊 Kafka/Kinesis"]
+        ML["🤖 SageMaker/Bedrock"]
+        Market["📈 EIA/AER Data"]
     end
 
-    subgraph Persistence
-        DB[SQL Database]
-        Cache[Redis Cache]
+    subgraph Persistence["💾 Persistence"]
+        DB["💾 Database - SQLAlchemy"]
         Tools --> DB
         Resources --> DB
         Prompts --> DB
         Servers --> DB
+    end
+
+    subgraph Caching["⚡ Caching"]
+        Cache["⚡ Cache - Redis or Memory"]
         Core --> Cache
     end
 
-    subgraph Adapters
-        REST[REST Wrappers]
-        MCP[MCP Servers]
-        Federation --> REST
-        Federation --> MCP
+    subgraph Clients["🖥️ Clients and Agent Runtimes"]
+        IDE["💻 IDE Assistants"]
+        Notebooks["📓 Jupyter/VS Code"]
+        Chat["💬 OpenWebUI"]
+        Orchestrators["🔄 n8n/Airflow"]
+        BI["📊 Power BI/Grafana"]
+        Agents["🤖 LangChain/CrewAI"]
     end
 
     IDE --> Protocol
@@ -424,19 +415,18 @@ graph TD
     BI --> Protocol
     Orchestrators --> Protocol
 
-    REST --> SCADA
-    REST --> EFM
-    REST --> Historians
-    REST --> Edge
-    REST --> ERP
-    REST --> Maint
-    REST --> PA
-    REST --> LIMS
-    REST --> Docs
-    REST --> Lake
-    REST --> Stream
-    REST --> ML
-    REST --> Market
+    Federation --> SCADA
+    Federation --> Historians
+    Federation --> EFM
+    Federation --> Edge
+    Federation --> ERP
+    Federation --> Maint
+    Federation --> PA
+    Federation --> LIMS
+    Federation --> Lake
+    Federation --> Stream
+    Federation --> ML
+    Federation --> Market
                 </pre>
             </div>
             <div style="margin-top: 1.5rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; color: #34495e; font-size: 0.9rem;">
