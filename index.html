@@ -335,27 +335,93 @@
             <h2>MCP Gateway for Oil & Gas — Reference Architecture</h2>
             <p style="margin-bottom: 1.5rem; color: #7f8c8d;">Below is a Mermaid diagram modeled after IBM's MCP Context Forge reference, adapted for an upstream oil & gas environment (SCADA, measurement, production accounting, maintenance, and market data).</p>
             <div class="mermaid-container">
-                <!-- Diagram -->
-                <div class="mermaid">
+                <pre class="mermaid">
 graph TD
-    A[Clients] --> B[MCP Gateway]
-    B --> C[Oil and Gas Systems]
-    
-    A1[IDE Assistants] --> A
-    A2[Notebooks] --> A
-    A3[Chat] --> A
-    A4[Orchestrators] --> A
-    
-    B1[Auth] --> B
-    B2[Registry] --> B
-    B3[Protocol] --> B
-    B4[Federation] --> B
-    
-    C1[SCADA] --> C
-    C2[Historians] --> C
-    C3[ERP] --> C
-    C4[Production] --> C
-                </div>
+    subgraph Clients[🖥️ Clients and Agents]
+        IDE[Claude Desktop / Copilot / Continue]
+        Notebooks[Jupyter / VS Code]
+        Chat[OpenWebUI / Internal Chat]
+        Orchestrators[n8n / Airflow / Dagster]
+        BI[Power BI / Grafana]
+        Agents[LangChain / CrewAI]
+    end
+
+    subgraph UI_and_Auth[🔐 UI and Access]
+        AdminUI[Admin UI]
+        Auth[Auth - JWT + OIDC]
+        Policy[OPA Policies]
+        AdminUI --> Core
+        Auth --> Core
+        Policy --> Core
+    end
+
+    subgraph Gateway_Core[🚪 MCP Gateway Core]
+        Core[Gateway Core]
+        Registry[MCP Registry]
+        Protocol[Protocol Conversion]
+        Federation[Federation Manager]
+        Core --> Registry
+        Core --> Protocol
+        Core --> Federation
+    end
+
+    subgraph Services[🧰 Service Layer]
+        Tools[Tool Service]
+        Resources[Resource Service]
+        Prompts[Prompt Service]
+        Servers[Server Service]
+        Core --> Tools
+        Core --> Resources
+        Core --> Prompts
+        Core --> Servers
+    end
+
+    subgraph OT_Systems[⚙️ OT/Field Systems]
+        SCADA[SCADA/PLC - OPC UA]
+        EFM[Flow Computers]
+        Historians[PI System / Canary]
+        Edge[Edge Gateways]
+    end
+
+    subgraph IT_Systems[💼 IT/Enterprise]
+        ERP[SAP S/4HANA]
+        Maint[Maximo]
+        PA[Production Accounting]
+        LIMS[Lab Systems]
+    end
+
+    subgraph Data_Cloud[☁️ Cloud and Data]
+        Lake[Data Lake]
+        Stream[Kafka Streams]
+        ML[Model Serving]
+        Market[Market Data]
+    end
+
+    subgraph Persistence[💾 Storage]
+        DB[SQL Database]
+        Cache[Redis Cache]
+        Tools --> DB
+        Resources --> DB
+        Core --> Cache
+    end
+
+    IDE --> Protocol
+    Notebooks --> Protocol
+    Chat --> Protocol
+    Agents --> Protocol
+    BI --> Protocol
+    Orchestrators --> Protocol
+
+    Federation --> SCADA
+    Federation --> EFM
+    Federation --> Historians
+    Federation --> ERP
+    Federation --> Maint
+    Federation --> PA
+    Federation --> Lake
+    Federation --> Stream
+    Federation --> ML
+                </pre>
             </div>
             <div style="margin-top: 1.5rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; color: #34495e; font-size: 0.9rem;">
                 <strong>Notes:</strong><br/>
@@ -556,31 +622,13 @@ curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..." \
         </div>
     </div>
     
-    <script type="module">
-      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
-      mermaid.initialize({
-        startOnLoad: true,
-        securityLevel: "loose",
-        theme: "base",
-        themeVariables: {
-          fontFamily: "Inter, Segoe UI, Arial, sans-serif",
-          primaryColor: "#f4f6f8",     
-          primaryBorderColor: "#d3d7db",
-          primaryTextColor: "#1a1a1a",
-          secondaryColor: "#e0e7ef",   
-          tertiaryColor: "#cce0f5",    
-          lineColor: "#6b7280",
-          clusterBkg: "#f9fafb",
-          clusterBorder: "#9ca3af",
-          edgeLabelBackground: "#ffffff",
-          nodeBorderRadius: "8px"
-        },
-        flowchart: {
-          curve: "basis",
-          useMaxWidth: true,
-          padding: 15
-        }
-      });
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.2.3/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose'
+        });
     </script>
 </body>
 </html>
