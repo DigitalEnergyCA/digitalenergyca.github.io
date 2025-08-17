@@ -609,8 +609,7 @@ curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..." \
             <h3>Configuration Examples</h3>
             
             <h4 style=\"margin-bottom: 1rem; color: #2c3e50;\">REST Endpoint to MCP Tool</h4>
-```json
-{
+            <pre style=\"background: #2c3e50; color: #ecf0f1; padding: 1rem; border-radius: 6px; font-family: 'Courier New', monospace; font-size: 0.9rem; overflow-x: auto;\"><code>{
   "name": "get_well_production",
   "description": "Retrieve daily production data for a specific well",
   "inputSchema": {
@@ -625,12 +624,10 @@ curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..." \
     "method": "GET",
     "auth": "bearer_token"
   }
-}
-```
+}</code></pre>
 
             <h4 style=\"margin-top: 2rem; margin-bottom: 1rem; color: #2c3e50;\">Federation Example</h4>
-```yaml
-federation:
+            <pre style=\"background: #2c3e50; color: #ecf0f1; padding: 1rem; border-radius: 6px; font-family: 'Courier New', monospace; font-size: 0.9rem; overflow-x: auto;\"><code>federation:
   namespaces:
     - name: "field_ops"
       servers:
@@ -642,8 +639,7 @@ federation:
         - "maximo-mcp-server"
   discovery:
     auto_register: true
-    health_check_interval: 30s
-```
+    health_check_interval: 30s</code></pre>
         </div>
 
         <div class="footer">
