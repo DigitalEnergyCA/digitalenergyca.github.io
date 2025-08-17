@@ -337,8 +337,24 @@
             <div class="mermaid-container">
                 <!-- Diagram -->
                 <div class="mermaid">
-flowchart TD
-  %% Clients / Consumers
+%%{init: {
+  "theme": "neutral",
+  "flowchart": { "curve": "basis", "htmlLabels": true, "useMaxWidth": true, "padding": 8, "nodeSpacing": 25, "rankSpacing": 40 },
+  "themeVariables": {
+    "fontFamily": "Inter, Segoe UI, Roboto, Arial",
+    "primaryColor": "#f8fafc",
+    "primaryBorderColor": "#cbd5e1",
+    "primaryTextColor": "#0f172a",
+    "lineColor": "#94a3b8",
+    "secondaryColor": "#eef2ff",
+    "tertiaryColor": "#f1f5f9",
+    "clusterBkg": "#ffffff",
+    "clusterBorder": "#cbd5e1"
+  }
+}}%%
+flowchart LR
+
+  %% ===== Clients =====
   subgraph Clients[Clients &amp; Agent Runtimes]
     IDE[IDE Assistants\n(Claude Desktop, Copilot, Continue, Cline)]
     Notebooks[Jupyter / VS Code]
@@ -348,24 +364,24 @@ flowchart TD
     Agents[LangChain / LangGraph / CrewAI / SK]
   end
 
-  %% UI & Auth
+  %% ===== UI/Auth =====
   subgraph UI_and_Auth[UI &amp; Access Control]
     AdminUI[Admin UI]
-    Auth[Auth: JWT + Basic + OIDC]
+    Auth[Auth:\nJWT · Basic · OIDC]
     Policy[OPA Policies\n(PII/XSS Filters, RBAC)]
   end
 
-  %% Gateway Core
+  %% ===== Core =====
   subgraph Core[Gateway Core]
     Registry[MCP Registry\n(Tools · Prompts · Resources)]
-    Proto[Protocol Conversion\n(JSON-RPC, HTTP, WS, SSE, stdio)]
-    Fed[Federation Manager\n(Auto-discovery, Failover, Namespacing)]
+    Proto[Protocol Conversion\n(JSON-RPC · HTTP · WS · SSE · stdio)]
+    Fed[Federation Manager\n(Auto-discovery · Failover · Namespacing)]
     Rate[Rate Limiting / QoS]
-    Obs[Observability\n(Prometheus, Phoenix traces)]
+    Obs[Observability\n(Prometheus · Traces)]
     Health[Healthchecks]
   end
 
-  %% Services layer
+  %% ===== Services =====
   subgraph Services[Service Layer]
     ToolSvc[Tool Service]
     ResSvc[Resource Service]
@@ -373,45 +389,52 @@ flowchart TD
     ServerSvc[Virtual Server Service]
   end
 
-  %% Persistence & Cache
+  %% ===== Persistence =====
   subgraph Persistence[Persistence]
     DB[(SQL DB via SQLAlchemy)]
   end
+
+  %% ===== Cache =====
   subgraph Cache[Cache]
     Redis[(Redis / In-memory)]
   end
 
-  %% External Systems (Oil & Gas)
+  %% ===== Enterprise/Field =====
   subgraph OGSys[Enterprise &amp; Field Systems]
     subgraph OT[OT / Field]
       SCADA[SCADA/PLC via\nOPC UA · MQTT · Ignition]
-      EFM[EFM / Flow Computers\n(ROCs, OMNI, Daniels)]
-      Hist[Historians\n(PI System, Canary)]
-      Edge[Edge Gateways\n(Kepware, HiveMQ, AWS IoT)]
+      EFM[EFM / Flow Computers\n(ROCs · OMNI · Daniels)]
+      Hist[Historians\n(PI System · Canary)]
+      Edge[Edge Gateways\n(Kepware · HiveMQ · AWS IoT)]
     end
     subgraph IT[IT / Enterprise]
-      ERP[SAP S/4HANA / JDE]
-      Maint[Maximo / ServiceNow]
-      PA[Production Accounting\n(Peloton ProdView, Avocet, FLOWCAL)]
+      ERP[SAP S/4HANA · JDE]
+      Maint[Maximo · ServiceNow]
+      PA[Production Accounting\n(Peloton ProdView · Avocet · FLOWCAL)]
       LIMS[LIMS / Lab]
-      Docs[Well/Facility DBs\n(WellView, OpenWells, Geo databases)]
+      Docs[Well/Facility DBs\n(WellView · OpenWells · Geo DBs)]
     end
     subgraph Data[Cloud &amp; Data]
-      Lake[Data Lake/Lakehouse\n(S3, ADLS, Delta)]
-      Stream[Streams\n(Kafka, Kinesis, Pulsar)]
-      ML[Model Serving\n(AWS SageMaker, Bedrock, vLLM/Ollama)]
-      Market[Market/Reg Data\n(EIA, AER DDS, CER, ISO feeds)]
+      Lake[Data Lake/Lakehouse\n(S3 · ADLS · Delta)]
+      Stream[Streams\n(Kafka · Kinesis · Pulsar)]
+      ML[Model Serving\n(AWS SageMaker · Bedrock · vLLM/Ollama)]
+      Market[Market/Reg Data\n(EIA · AER DDS · CER · ISO feeds)]
     end
   end
 
-  %% Adapters & Federation
+  %% ===== Adapters =====
   subgraph Adapters[Adapters &amp; Wrapped APIs]
     RESTWrap[REST/Function Wrappers\n(JSON-Schema validated)]
-    MCPServers[External MCP Servers\n(custom, OSS)]
+    MCPServers[External MCP Servers\n(custom · OSS)]
   end
 
-  %% Flows
-  Clients -->|JSON-RPC / WS / SSE / stdio| Proto
+  %% ===== Flows =====
+  IDE --> Proto
+  Notebooks --> Proto
+  Chat --> Proto
+  Agents --> Proto
+  BI --> Proto
+  Orchestrators --> Proto
   AdminUI --> Registry
   Auth --> Core
   Policy --> Core
@@ -431,15 +454,12 @@ flowchart TD
   ResSvc --> DB
   PromptSvc --> DB
   ServerSvc --> DB
-
   Core --> Redis
 
-  %% Federation & Tool ingress
   Fed --> MCPServers
   RESTWrap --> ToolSvc
   MCPServers --> ToolSvc
 
-  %% Domain systems surfaced as tools/resources
   RESTWrap --> SCADA
   RESTWrap --> EFM
   RESTWrap --> Hist
@@ -453,9 +473,34 @@ flowchart TD
   RESTWrap --> ML
   RESTWrap --> Market
 
-  %% Orchestrators also act as clients and tools
-  Orchestrators --> Proto
   Orchestrators -. expose as tools .-> MCPServers
+
+  %% ===== Styling =====
+  classDef client fill:#eef2ff,stroke:#94a3b8,stroke-width:1.2,rx:10,ry:10;
+  classDef core fill:#ffffff,stroke:#94a3b8,stroke-width:1.4,rx:10,ry:10;
+  classDef service fill:#f8fafc,stroke:#94a3b8,rx:10,ry:10;
+  classDef data fill:#f0fdf4,stroke:#86efac,rx:10,ry:10,color:#064e3b;
+  classDef adapter fill:#fff7ed,stroke:#fdba74,rx:10,ry:10,color:#7c2d12;
+  classDef store fill:#ecfeff,stroke:#67e8f9,rx:8,ry:8,color:#0e7490;
+
+  class IDE,Notebooks,Chat,Orchestrators,BI,Agents client;
+  class Registry,Proto,Fed,Rate,Obs,Health core;
+  class ToolSvc,ResSvc,PromptSvc,ServerSvc service;
+  class DB,Redis store;
+  class RESTWrap,MCPServers adapter;
+  class Lake,Stream,ML,Market data;
+
+  style Clients fill:#ffffff,stroke:#cbd5e1,stroke-width:1.5,rx:12,ry:12
+  style UI_and_Auth fill:#ffffff,stroke:#cbd5e1,stroke-width:1.5,rx:12,ry:12
+  style Core fill:#ffffff,stroke:#cbd5e1,stroke-width:1.5,rx:12,ry:12
+  style Services fill:#ffffff,stroke:#cbd5e1,stroke-width:1.5,rx:12,ry:12
+  style Persistence fill:#ffffff,stroke:#cbd5e1,stroke-width:1.5,rx:12,ry:12
+  style Cache fill:#ffffff,stroke:#cbd5e1,stroke-width:1.5,rx:12,ry:12
+  style OGSys fill:#ffffff,stroke:#cbd5e1,stroke-width:1.5,rx:12,ry:12
+  style OT fill:#ffffff,stroke:#e2e8f0,rx:10,ry:10
+  style IT fill:#ffffff,stroke:#e2e8f0,rx:10,ry:10
+  style Data fill:#ffffff,stroke:#e2e8f0,rx:10,ry:10
+  style Adapters fill:#ffffff,stroke:#cbd5e1,stroke-width:1.5,rx:12,ry:12
                 </div>
             </div>
             <div style="margin-top: 1.5rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; color: #34495e; font-size: 0.9rem;">
