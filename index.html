@@ -256,6 +256,17 @@
             }
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true
+            }
+        });
+    </script>
 </head>
 <body>
     <div class="container">
@@ -279,9 +290,10 @@
         </div>
 
         <div class="architecture-section">
-            <h2>System Architecture</h2>
+            <h2>MCP Gateway for Oil & Gas — Reference Architecture</h2>
+            <p style="margin-bottom: 1.5rem; color: #7f8c8d;">Below is a Mermaid diagram modeled after IBM's MCP Context Forge reference, adapted for an upstream oil & gas environment (SCADA, measurement, production accounting, maintenance, and market data).</p>
             <div class="mermaid-container">
-                <pre class="mermaid">flowchart TD
+                <div class="mermaid">flowchart TD
     %% Clients / Consumers
     subgraph Clients[Clients & Agent Runtimes]
         IDE[IDE Assistants<br/>(Claude Desktop, Copilot, Continue, Cline)]
@@ -309,6 +321,22 @@
         Health[Healthchecks]
     end
 
+    %% Services layer
+    subgraph Services[Service Layer]
+        ToolSvc[Tool Service]
+        ResSvc[Resource Service]
+        PromptSvc[Prompt Service]
+        ServerSvc[Virtual Server Service]
+    end
+
+    %% Persistence & Cache
+    subgraph Persistence[Persistence]
+        DB[(SQL DB via SQLAlchemy)]
+    end
+    subgraph Cache[Cache]
+        Redis[(Redis / In-memory)]
+    end
+
     %% External Systems (Oil & Gas)
     subgraph OGSys[Enterprise & Field Systems]
         subgraph OT[OT / Field]
@@ -320,16 +348,22 @@
         subgraph IT[IT / Enterprise]
             ERP[SAP S/4HANA / JDE]
             Maint[Maximo / ServiceNow]
-            PA[Production Accounting<br/>(ProdView, Avocet, FLOWCAL)]
+            PA[Production Accounting<br/>(Peloton ProdView, Avocet, FLOWCAL)]
             LIMS[LIMS / Lab]
-            Docs[Well/Facility DBs<br/>(WellView, OpenWells, Geo)]
+            Docs[Well/Facility DBs<br/>(WellView, OpenWells, Geo databases)]
         end
         subgraph Data[Cloud & Data]
             Lake[Data Lake/Lakehouse<br/>(S3, ADLS, Delta)]
             Stream[Streams<br/>(Kafka, Kinesis, Pulsar)]
-            ML[Model Serving<br/>(SageMaker, Bedrock, vLLM)]
-            Market[Market/Reg Data<br/>(EIA, AER DDS, CER, ISO)]
+            ML[Model Serving<br/>(AWS SageMaker, Bedrock, vLLM/Ollama)]
+            Market[Market/Reg Data<br/>(EIA, AER DDS, CER, ISO feeds)]
         end
+    end
+
+    %% Virtualization / Adapters into MCP
+    subgraph Adapters[Adapters & Wrapped APIs]
+        RESTWrap[REST/Function Wrappers<br/>(JSON-Schema validated)]
+        MCPServers[External MCP Servers<br/>(custom, OSS)]
     end
 
     %% Flows
@@ -338,9 +372,52 @@
     Auth --> Core
     Policy --> Core
 
-    Core --> OT
-    Core --> IT
-    Core --> Data</pre>
+    Core --> Proto
+    Core --> Fed
+    Core --> Rate
+    Core --> Obs
+    Core --> Health
+
+    Core --> ToolSvc
+    Core --> ResSvc
+    Core --> PromptSvc
+    Core --> ServerSvc
+
+    ToolSvc --> DB
+    ResSvc --> DB
+    PromptSvc --> DB
+    ServerSvc --> DB
+
+    Core --> Redis
+
+    %% Federation & Tool ingress
+    Fed --> MCPServers
+    RESTWrap --> ToolSvc
+    MCPServers --> ToolSvc
+
+    %% Domain systems surfaced as tools/resources
+    RESTWrap --> SCADA
+    RESTWrap --> EFM
+    RESTWrap --> Hist
+    RESTWrap --> ERP
+    RESTWrap --> Maint
+    RESTWrap --> PA
+    RESTWrap --> LIMS
+    RESTWrap --> Docs
+    RESTWrap --> Lake
+    RESTWrap --> Stream
+    RESTWrap --> ML
+    RESTWrap --> Market
+
+    %% Orchestrators also act as clients and tools
+    Orchestrators --> Proto
+    Orchestrators -. expose as tools .-> MCPServers</div>
+            </div>
+            <div style="margin-top: 1.5rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; color: #34495e; font-size: 0.9rem;">
+                <strong>Notes:</strong><br/>
+                • Mirrors the sections of the MCP Context Forge diagram but replaces generic services with oil and gas specific systems<br/>
+                • Keep n8n as orchestration while MCP Gateway is the protocol-native "front door"<br/>
+                • You can switch vendor names to match your environment (e.g., Ignition vs. SCADA platform, PI vs. Canary, Peloton vs. Avocet)
             </div>
         </div>
 
