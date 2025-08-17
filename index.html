@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="DigitalEnergy MCP Gateway - Unified gateway for Oil & Gas digital transformation">
     <title>DigitalEnergy MCP Gateway</title>
+    
+    <!-- OpenGraph and Twitter meta -->
+    <meta property="og:title" content="DigitalEnergy MCP Gateway">
+    <meta property="og:description" content="Unified Model Context Protocol Gateway for Oil & Gas Digital Transformation">
+    <meta property="og:url" content="https://digitalenergyca.github.io/">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="DigitalEnergy MCP Gateway">
+    <meta name="twitter:description" content="Unified Model Context Protocol Gateway for Oil & Gas Digital Transformation">
+    
+    <link rel="canonical" href="https://digitalenergyca.github.io/">
     <style>
         * {
             margin: 0;
@@ -241,6 +252,24 @@
         .footer a:hover {
             text-decoration: underline;
         }
+        
+        .btn {
+            transition: transform 0.2s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .overview p, .feature-card p {
+            line-height: 1.8;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 3rem;
+        }
 
         @media (max-width: 768px) {
             .container {
@@ -256,16 +285,9 @@
             }
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-    <script>
-        mermaid.initialize({
-            startOnLoad: true,
-            theme: 'default',
-            flowchart: {
-                useMaxWidth: true,
-                htmlLabels: true
-            }
-        });
+    <script type="module">
+      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+      mermaid.initialize({ startOnLoad: true, theme: "default" });
     </script>
 </head>
 <body>
@@ -279,21 +301,27 @@
             <h2>Overview</h2>
             <p>
                 The DigitalEnergy MCP Gateway provides a unified interface for AI assistants and agents to interact with 
-                Oil & Gas enterprise systems. Built on the Model Context Protocol (MCP), it enables seamless integration 
+                Oil & Gas enterprise systems. Built on the <a href="https://modelcontextprotocol.io/introduction" style="color: #3498db;">Model Context Protocol (MCP)</a>, it enables seamless integration 
                 between LLMs and industrial systems including SCADA, historians, ERP, and production accounting platforms.
             </p>
             <p>
                 <span class="badge badge-blue">MCP 1.0</span>
                 <span class="badge badge-green">Production Ready</span>
                 <span class="badge badge-orange">Enterprise Grade</span>
+                <a href="https://github.com/DigitalEnergyCA/mcp-gateway/releases" style="margin-left: 1rem; color: #3498db; text-decoration: none;">📋 Changelog</a>
             </p>
+            <div style="margin-top: 2rem;">
+                <a href="https://github.com/DigitalEnergyCA/mcp-gateway" class="btn btn-primary" style="margin-right: 1rem; background: #3498db; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 600; display: inline-block;">View on GitHub</a>
+                <a href="#quick-start" class="btn btn-secondary" style="background: transparent; color: #3498db; border: 2px solid #3498db; padding: 10px 22px; border-radius: 6px; text-decoration: none; font-weight: 600; display: inline-block;">Deploy with Docker</a>
+            </div>
         </div>
 
         <div class="architecture-section">
             <h2>MCP Gateway for Oil & Gas — Reference Architecture</h2>
             <p style="margin-bottom: 1.5rem; color: #7f8c8d;">Below is a Mermaid diagram modeled after IBM's MCP Context Forge reference, adapted for an upstream oil & gas environment (SCADA, measurement, production accounting, maintenance, and market data).</p>
             <div class="mermaid-container">
-                <div class="mermaid">flowchart TD
+```mermaid
+flowchart TD
     %% Clients / Consumers
     subgraph Clients[Clients & Agent Runtimes]
         IDE[IDE Assistants<br/>(Claude Desktop, Copilot, Continue, Cline)]
@@ -411,7 +439,8 @@
 
     %% Orchestrators also act as clients and tools
     Orchestrators --> Proto
-    Orchestrators -. expose as tools .-> MCPServers</div>
+    Orchestrators -. expose as tools .-> MCPServers
+```
             </div>
             <div style="margin-top: 1.5rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; color: #34495e; font-size: 0.9rem;">
                 <strong>Notes:</strong><br/>
@@ -438,11 +467,13 @@
                 <h3><span class="icon">🔌</span> Protocol Support</h3>
                 <p>Native support for industrial and enterprise protocols</p>
                 <ul>
+                    <li>JSON-RPC for native MCP communication</li>
+                    <li>WebSocket (WS) for real-time data streams</li>
+                    <li>Server-Sent Events (SSE) for live updates</li>
+                    <li>stdio for command-line integrations</li>
                     <li>OPC UA for SCADA/PLC systems</li>
                     <li>MQTT for IoT edge devices</li>
-                    <li>Modbus TCP/RTU for field devices</li>
                     <li>REST/SOAP for enterprise APIs</li>
-                    <li>SQL for database integration</li>
                 </ul>
             </div>
 
@@ -453,7 +484,7 @@
                     <li>Role-based access control (RBAC)</li>
                     <li>PII/sensitive data filtering</li>
                     <li>Audit logging and traceability</li>
-                    <li>ISA/IEC 62443 compliance ready</li>
+                    <li>ISA/IEC 62443 compliance ready (RBAC, network zoning, audit logs)</li>
                     <li>Air-gapped deployment options</li>
                 </ul>
             </div>
@@ -499,9 +530,10 @@
             </table>
         </div>
 
-        <div class="feature-card">
+        <div class="feature-card" id="quick-start">
             <h3>Quick Start</h3>
-            <div class="code-block">
+            <div style="margin-bottom: 1rem;">
+```bash
 # Install via Docker
 docker pull digitalenergy/mcp-gateway:latest
 docker run -d -p 8080:8080 digitalenergy/mcp-gateway
@@ -509,7 +541,109 @@ docker run -d -p 8080:8080 digitalenergy/mcp-gateway
 # Or using Docker Compose
 curl -O https://digitalenergyca.github.io/docker-compose.yml
 docker-compose up -d
+```
             </div>
+            
+            <h4 style="margin-top: 2rem; margin-bottom: 1rem; color: #2c3e50;">Authentication Example</h4>
+```bash
+# JWT Authentication
+curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..." \
+     https://gateway.digitalenergy.ca/mcp/tools
+
+# 401 Unauthorized Response
+{
+  "error": "invalid_token",
+  "message": "JWT token expired or invalid"
+}
+```
+        </div>
+
+        <div class="deployment-table">
+            <h2>Reference Integrations</h2>
+            <p style=\"margin-bottom: 1.5rem; color: #7f8c8d;\">Production-ready MCP tools for common Oil & Gas systems. Each integration exposes enterprise data as standardized MCP resources and tools.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>System</th>
+                        <th>Integration Type</th>
+                        <th>Available Operations</th>
+                        <th>Tool Schema</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>SCADA via OPC UA</strong></td>
+                        <td>Real-time data access</td>
+                        <td>Read tags, browse nodes, subscribe to changes</td>
+                        <td><a href="#" style="color: #3498db;">scada-tools.json</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>PI Historian reads</strong></td>
+                        <td>Time-series data</td>
+                        <td>Historical queries, trend analysis, archive search</td>
+                        <td><a href="#" style="color: #3498db;">pi-tools.json</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>FLOWCAL netting</strong></td>
+                        <td>Production accounting</td>
+                        <td>Gas/liquid calculations, volume corrections, reports</td>
+                        <td><a href="#" style="color: #3498db;">flowcal-tools.json</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Maximo work orders</strong></td>
+                        <td>Maintenance management</td>
+                        <td>Create WO, update status, assign resources</td>
+                        <td><a href="#" style="color: #3498db;">maximo-tools.json</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>EIA data pulls</strong></td>
+                        <td>Market data wrapper</td>
+                        <td>Price feeds, inventory reports, regulatory filings</td>
+                        <td><a href="#" style="color: #3498db;">eia-tools.json</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="feature-card">
+            <h3>Configuration Examples</h3>
+            
+            <h4 style=\"margin-bottom: 1rem; color: #2c3e50;\">REST Endpoint to MCP Tool</h4>
+```json
+{
+  "name": "get_well_production",
+  "description": "Retrieve daily production data for a specific well",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "well_id": {"type": "string"},
+      "date_range": {"type": "string", "format": "date"}
+    }
+  },
+  "endpoint": {
+    "url": "https://api.company.com/wells/{well_id}/production",
+    "method": "GET",
+    "auth": "bearer_token"
+  }
+}
+```
+
+            <h4 style=\"margin-top: 2rem; margin-bottom: 1rem; color: #2c3e50;\">Federation Example</h4>
+```yaml
+federation:
+  namespaces:
+    - name: "field_ops"
+      servers:
+        - "scada-mcp-server"
+        - "historian-mcp-server"
+    - name: "corporate"
+      servers:
+        - "sap-mcp-server"
+        - "maximo-mcp-server"
+  discovery:
+    auto_register: true
+    health_check_interval: 30s
+```
         </div>
 
         <div class="footer">
