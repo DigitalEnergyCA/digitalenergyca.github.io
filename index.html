@@ -340,7 +340,7 @@
                 <div class="mermaid">
 flowchart TD
   %% Clients / Consumers
-  subgraph Clients[Clients &amp; Agent Runtimes]
+  subgraph Clients[Clients & Agent Runtimes]
     IDE[IDE Assistants\n(Claude Desktop, Copilot, Continue, Cline)]
     Notebooks[Jupyter / VS Code]
     Chat[OpenWebUI / Internal Chat]
@@ -350,7 +350,7 @@ flowchart TD
   end
 
   %% UI & Auth
-  subgraph UI_and_Auth[UI &amp; Access Control]
+  subgraph UI_and_Auth[UI & Access Control]
     AdminUI[Admin UI]
     Auth[Auth: JWT + Basic + OIDC]
     Policy[OPA Policies\n(PII/XSS Filters, RBAC)]
@@ -383,7 +383,7 @@ flowchart TD
   end
 
   %% External Systems (Oil & Gas)
-  subgraph OGSys[Enterprise &amp; Field Systems]
+  subgraph OGSys[Enterprise & Field Systems]
     subgraph OT[OT / Field]
       SCADA[SCADA/PLC via\nOPC UA · MQTT · Ignition]
       EFM[EFM / Flow Computers\n(ROCs, OMNI, Daniels)]
@@ -397,7 +397,7 @@ flowchart TD
       LIMS[LIMS / Lab]
       Docs[Well/Facility DBs\n(WellView, OpenWells, Geo databases)]
     end
-    subgraph Data[Cloud &amp; Data]
+    subgraph Data[Cloud & Data]
       Lake[Data Lake/Lakehouse\n(S3, ADLS, Delta)]
       Stream[Streams\n(Kafka, Kinesis, Pulsar)]
       ML[Model Serving\n(AWS SageMaker, Bedrock, vLLM/Ollama)]
@@ -406,7 +406,7 @@ flowchart TD
   end
 
   %% Adapters & Federation
-  subgraph Adapters[Adapters &amp; Wrapped APIs]
+  subgraph Adapters[Adapters & Wrapped APIs]
     RESTWrap[REST/Function Wrappers\n(JSON-Schema validated)]
     MCPServers[External MCP Servers\n(custom, OSS)]
   end
