@@ -337,19 +337,17 @@
             <div class="mermaid-container">
                 <!-- Diagram -->
                 <div class="mermaid">
-%%{init: {
-  "theme": "neutral",
-  "flowchart": { "curve": "basis", "htmlLabels": true, "useMaxWidth": true, "padding": 8, "nodeSpacing": 25, "rankSpacing": 40 },
-  "themeVariables": {
-    "fontFamily": "Inter, Segoe UI, Roboto, Arial",
-    "primaryColor": "#f8fafc",
-    "primaryBorderColor": "#cbd5e1",
-    "primaryTextColor": "#0f172a",
-    "lineColor": "#94a3b8",
-    "secondaryColor": "#eef2ff",
-    "tertiaryColor": "#f1f5f9",
-    "clusterBkg": "#ffffff",
-    "clusterBorder": "#cbd5e1"
+%%{init:{
+  "theme":"neutral",
+  "flowchart":{"curve":"basis","nodeSpacing":30,"rankSpacing":60,"htmlLabels":true},
+  "themeVariables":{
+    "fontFamily":"Inter, Segoe UI, Roboto, Arial",
+    "primaryColor":"#ffffff",
+    "primaryBorderColor":"#CBD5E1",
+    "primaryTextColor":"#0F172A",
+    "lineColor":"#94A3B8",
+    "clusterBkg":"#FFFFFF",
+    "clusterBorder":"#CBD5E1"
   }
 }}%%
 flowchart LR
@@ -475,32 +473,34 @@ flowchart LR
 
   Orchestrators -. expose as tools .-> MCPServers
 
-  %% ===== Styling =====
-  classDef client fill:#eef2ff,stroke:#94a3b8,stroke-width:1.2,rx:10,ry:10;
-  classDef core fill:#ffffff,stroke:#94a3b8,stroke-width:1.4,rx:10,ry:10;
-  classDef service fill:#f8fafc,stroke:#94a3b8,rx:10,ry:10;
-  classDef data fill:#f0fdf4,stroke:#86efac,rx:10,ry:10,color:#064e3b;
-  classDef adapter fill:#fff7ed,stroke:#fdba74,rx:10,ry:10,color:#7c2d12;
-  classDef store fill:#ecfeff,stroke:#67e8f9,rx:8,ry:8,color:#0e7490;
+%% === Classes & Styles ===
+linkStyle default stroke-width:1.4;
 
-  class IDE,Notebooks,Chat,Orchestrators,BI,Agents client;
-  class Registry,Proto,Fed,Rate,Obs,Health core;
-  class ToolSvc,ResSvc,PromptSvc,ServerSvc service;
-  class DB,Redis store;
-  class RESTWrap,MCPServers adapter;
-  class Lake,Stream,ML,Market data;
+classDef client fill:#EEF2FF,stroke:#94A3B8,stroke-width:1.2,rx:10,ry:10,color:#0F172A;
+classDef core fill:#FFFFFF,stroke:#94A3B8,stroke-width:1.5,rx:12,ry:12,color:#0F172A;
+classDef service fill:#F8FAFC,stroke:#94A3B8,stroke-width:1.2,rx:10,ry:10,color:#0F172A;
+classDef store fill:#ECFEFF,stroke:#67E8F9,stroke-width:1.2,rx:8,ry:8,color:#0E7490;
+classDef adapter fill:#FFF7ED,stroke:#FDBA74,stroke-width:1.2,rx:10,ry:10,color:#7C2D12;
+classDef system fill:#F1F5F9,stroke:#CBD5E1,stroke-width:1.2,rx:10,ry:10,color:#0F172A;
 
-  style Clients fill:#ffffff,stroke:#cbd5e1,stroke-width:1.5,rx:12,ry:12
-  style UI_and_Auth fill:#ffffff,stroke:#cbd5e1,stroke-width:1.5,rx:12,ry:12
-  style Core fill:#ffffff,stroke:#cbd5e1,stroke-width:1.5,rx:12,ry:12
-  style Services fill:#ffffff,stroke:#cbd5e1,stroke-width:1.5,rx:12,ry:12
-  style Persistence fill:#ffffff,stroke:#cbd5e1,stroke-width:1.5,rx:12,ry:12
-  style Cache fill:#ffffff,stroke:#cbd5e1,stroke-width:1.5,rx:12,ry:12
-  style OGSys fill:#ffffff,stroke:#cbd5e1,stroke-width:1.5,rx:12,ry:12
-  style OT fill:#ffffff,stroke:#e2e8f0,rx:10,ry:10
-  style IT fill:#ffffff,stroke:#e2e8f0,rx:10,ry:10
-  style Data fill:#ffffff,stroke:#e2e8f0,rx:10,ry:10
-  style Adapters fill:#ffffff,stroke:#cbd5e1,stroke-width:1.5,rx:12,ry:12
+class IDE,Notebooks,Chat,Orchestrators,BI,Agents client;
+class Registry,Proto,Fed,Rate,Obs,Health core;
+class ToolSvc,ResSvc,PromptSvc,ServerSvc service;
+class DB,Redis store;
+class RESTWrap,MCPServers adapter;
+class SCADA,EFM,Hist,Edge,ERP,Maint,PA,LIMS,Docs,Lake,Stream,ML,Market system;
+
+style Clients fill:#FFFFFF,stroke:#CBD5E1,stroke-width:1.6,rx:14,ry:14
+style UI_and_Auth fill:#FFFFFF,stroke:#CBD5E1,stroke-width:1.6,rx:14,ry:14
+style Core fill:#FFFFFF,stroke:#CBD5E1,stroke-width:1.6,rx:14,ry:14
+style Services fill:#FFFFFF,stroke:#CBD5E1,stroke-width:1.6,rx:14,ry:14
+style Persistence fill:#FFFFFF,stroke:#CBD5E1,stroke-width:1.6,rx:14,ry:14
+style Cache fill:#FFFFFF,stroke:#CBD5E1,stroke-width:1.6,rx:14,ry:14
+style OGSys fill:#FFFFFF,stroke:#CBD5E1,stroke-width:1.6,rx:14,ry:14
+style OT fill:#FFFFFF,stroke:#E2E8F0,rx:12,ry:12
+style IT fill:#FFFFFF,stroke:#E2E8F0,rx:12,ry:12
+style Data fill:#FFFFFF,stroke:#E2E8F0,rx:12,ry:12
+style Adapters fill:#FFFFFF,stroke:#CBD5E1,stroke-width:1.6,rx:14,ry:14
                 </div>
             </div>
             <div style="margin-top: 1.5rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; color: #34495e; font-size: 0.9rem;">
