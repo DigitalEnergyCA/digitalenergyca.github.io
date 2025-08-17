@@ -337,10 +337,9 @@
             <div class="mermaid-container">
                 <!-- Diagram -->
                 <div class="mermaid">
-flowchart LR
-
-  %% ===== Clients =====
-  subgraph Clients[Clients & Agent Runtimes]
+flowchart TD
+  %% Clients / Consumers
+  subgraph Clients[Clients and Agent Runtimes]
     IDE[IDE Assistants\n(Claude Desktop, Copilot, Continue, Cline)]
     Notebooks[Jupyter / VS Code]
     Chat[OpenWebUI / Internal Chat]
@@ -349,24 +348,24 @@ flowchart LR
     Agents[LangChain / LangGraph / CrewAI / SK]
   end
 
-  %% ===== UI/Auth =====
-  subgraph UI_and_Auth[UI & Access Control]
+  %% UI and Auth
+  subgraph UI_and_Auth[UI and Access Control]
     AdminUI[Admin UI]
-    Auth[Auth:\nJWT · Basic · OIDC]
+    Auth[Auth: JWT + Basic + OIDC]
     Policy[OPA Policies\n(PII/XSS Filters, RBAC)]
   end
 
-  %% ===== Core =====
+  %% Gateway Core
   subgraph Core[Gateway Core]
     Registry[MCP Registry\n(Tools · Prompts · Resources)]
-    Proto[Protocol Conversion\n(JSON-RPC · HTTP · WS · SSE · stdio)]
-    Fed[Federation Manager\n(Auto-discovery · Failover · Namespacing)]
+    Proto[Protocol Conversion\n(JSON-RPC, HTTP, WS, SSE, stdio)]
+    Fed[Federation Manager\n(Auto-discovery, Failover, Namespacing)]
     Rate[Rate Limiting / QoS]
-    Obs[Observability\n(Prometheus · Traces)]
+    Obs[Observability\n(Prometheus, Phoenix traces)]
     Health[Healthchecks]
   end
 
-  %% ===== Services =====
+  %% Services layer
   subgraph Services[Service Layer]
     ToolSvc[Tool Service]
     ResSvc[Resource Service]
@@ -374,52 +373,51 @@ flowchart LR
     ServerSvc[Virtual Server Service]
   end
 
-  %% ===== Persistence =====
+  %% Persistence and Cache
   subgraph Persistence[Persistence]
     DB[(SQL DB via SQLAlchemy)]
   end
-
-  %% ===== Cache =====
   subgraph Cache[Cache]
     Redis[(Redis / In-memory)]
   end
 
-  %% ===== Enterprise/Field =====
-  subgraph OGSys[Enterprise & Field Systems]
+  %% Enterprise and Field Systems
+  subgraph OGSys[Enterprise and Field Systems]
     subgraph OT[OT / Field]
       SCADA[SCADA/PLC via\nOPC UA · MQTT · Ignition]
-      EFM[EFM / Flow Computers\n(ROCs · OMNI · Daniels)]
-      Hist[Historians\n(PI System · Canary)]
-      Edge[Edge Gateways\n(Kepware · HiveMQ · AWS IoT)]
+      EFM[EFM / Flow Computers\n(ROCs, OMNI, Daniels)]
+      Hist[Historians\n(PI System, Canary)]
+      Edge[Edge Gateways\n(Kepware, HiveMQ, AWS IoT)]
     end
     subgraph IT[IT / Enterprise]
-      ERP[SAP S/4HANA · JDE]
-      Maint[Maximo · ServiceNow]
-      PA[Production Accounting\n(Peloton ProdView · Avocet · FLOWCAL)]
+      ERP[SAP S/4HANA / JDE]
+      Maint[Maximo / ServiceNow]
+      PA[Production Accounting\n(Peloton ProdView, Avocet, FLOWCAL)]
       LIMS[LIMS / Lab]
-      Docs[Well/Facility DBs\n(WellView · OpenWells · Geo DBs)]
+      Docs[Well/Facility DBs\n(WellView, OpenWells, Geo databases)]
     end
-    subgraph Data[Cloud & Data]
-      Lake[Data Lake/Lakehouse\n(S3 · ADLS · Delta)]
-      Stream[Streams\n(Kafka · Kinesis · Pulsar)]
-      ML[Model Serving\n(AWS SageMaker · Bedrock · vLLM/Ollama)]
-      Market[Market/Reg Data\n(EIA · AER DDS · CER · ISO feeds)]
+    subgraph Data[Cloud and Data]
+      Lake[Data Lake/Lakehouse\n(S3, ADLS, Delta)]
+      Stream[Streams\n(Kafka, Kinesis, Pulsar)]
+      ML[Model Serving\n(AWS SageMaker, Bedrock, vLLM/Ollama)]
+      Market[Market/Reg Data\n(EIA, AER DDS, CER, ISO feeds)]
     end
   end
 
-  %% ===== Adapters =====
-  subgraph Adapters[Adapters & Wrapped APIs]
+  %% Adapters and Federation
+  subgraph Adapters[Adapters and Wrapped APIs]
     RESTWrap[REST/Function Wrappers\n(JSON-Schema validated)]
-    MCPServers[External MCP Servers\n(custom · OSS)]
+    MCPServers[External MCP Servers\n(custom, OSS)]
   end
 
-  %% ===== Flows =====
+  %% Flows
   IDE --> Proto
   Notebooks --> Proto
   Chat --> Proto
   Agents --> Proto
   BI --> Proto
   Orchestrators --> Proto
+
   AdminUI --> Registry
   Auth --> Core
   Policy --> Core
@@ -439,6 +437,7 @@ flowchart LR
   ResSvc --> DB
   PromptSvc --> DB
   ServerSvc --> DB
+
   Core --> Redis
 
   Fed --> MCPServers
@@ -459,35 +458,6 @@ flowchart LR
   RESTWrap --> Market
 
   Orchestrators -. expose as tools .-> MCPServers
-
-%% === Classes & Styles ===
-linkStyle default stroke-width:1.4;
-
-classDef client fill:#EEF2FF,stroke:#94A3B8,stroke-width:1.2,rx:10,ry:10,color:#0F172A;
-classDef core fill:#FFFFFF,stroke:#94A3B8,stroke-width:1.5,rx:12,ry:12,color:#0F172A;
-classDef service fill:#F8FAFC,stroke:#94A3B8,stroke-width:1.2,rx:10,ry:10,color:#0F172A;
-classDef store fill:#ECFEFF,stroke:#67E8F9,stroke-width:1.2,rx:8,ry:8,color:#0E7490;
-classDef adapter fill:#FFF7ED,stroke:#FDBA74,stroke-width:1.2,rx:10,ry:10,color:#7C2D12;
-classDef system fill:#F1F5F9,stroke:#CBD5E1,stroke-width:1.2,rx:10,ry:10,color:#0F172A;
-
-class IDE,Notebooks,Chat,Orchestrators,BI,Agents client;
-class Registry,Proto,Fed,Rate,Obs,Health core;
-class ToolSvc,ResSvc,PromptSvc,ServerSvc service;
-class DB,Redis store;
-class RESTWrap,MCPServers adapter;
-class SCADA,EFM,Hist,Edge,ERP,Maint,PA,LIMS,Docs,Lake,Stream,ML,Market system;
-
-style Clients fill:#FFFFFF,stroke:#CBD5E1,stroke-width:1.6,rx:14,ry:14
-style UI_and_Auth fill:#FFFFFF,stroke:#CBD5E1,stroke-width:1.6,rx:14,ry:14
-style Core fill:#FFFFFF,stroke:#CBD5E1,stroke-width:1.6,rx:14,ry:14
-style Services fill:#FFFFFF,stroke:#CBD5E1,stroke-width:1.6,rx:14,ry:14
-style Persistence fill:#FFFFFF,stroke:#CBD5E1,stroke-width:1.6,rx:14,ry:14
-style Cache fill:#FFFFFF,stroke:#CBD5E1,stroke-width:1.6,rx:14,ry:14
-style OGSys fill:#FFFFFF,stroke:#CBD5E1,stroke-width:1.6,rx:14,ry:14
-style OT fill:#FFFFFF,stroke:#E2E8F0,rx:12,ry:12
-style IT fill:#FFFFFF,stroke:#E2E8F0,rx:12,ry:12
-style Data fill:#FFFFFF,stroke:#E2E8F0,rx:12,ry:12
-style Adapters fill:#FFFFFF,stroke:#CBD5E1,stroke-width:1.6,rx:14,ry:14
                 </div>
             </div>
             <div style="margin-top: 1.5rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; color: #34495e; font-size: 0.9rem;">
