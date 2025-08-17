@@ -108,7 +108,6 @@
 
         .mermaid {
             font-family: 'Courier New', monospace;
-            white-space: pre;
             color: #34495e;
             font-size: 0.9rem;
             line-height: 1.4;
@@ -339,39 +338,124 @@
                 <!-- Diagram -->
                 <div class="mermaid">
 flowchart TD
-    %% Client Layer
-    Clients[AI Clients & Agents]
-    
-    %% Gateway Layer  
-    Gateway[MCP Gateway Core]
-    Auth[Authentication & Policy]
-    
-    %% Service Layer
-    Services[MCP Services]
-    Tools[Tool Registry]
-    
-    %% Data Layer
-    Cache[(Cache)]
-    DB[(Database)]
-    
-    %% Oil & Gas Systems
-    SCADA[SCADA Systems]
-    PI[PI Historian]
-    SAP[SAP/ERP]
-    Maximo[Maximo CMMS]
-    
-    %% Connections
-    Clients --> Gateway
-    Auth --> Gateway
-    Gateway --> Services
-    Services --> Tools
-    Services --> Cache
-    Services --> DB
-    
-    Tools --> SCADA
-    Tools --> PI  
-    Tools --> SAP
-    Tools --> Maximo
+  %% Clients / Consumers
+  subgraph Clients[Clients &amp; Agent Runtimes]
+    IDE[IDE Assistants\n(Claude Desktop, Copilot, Continue, Cline)]
+    Notebooks[Jupyter / VS Code]
+    Chat[OpenWebUI / Internal Chat]
+    Orchestrators[n8n / Airflow / Dagster]
+    BI[Power BI / Grafana]
+    Agents[LangChain / LangGraph / CrewAI / SK]
+  end
+
+  %% UI & Auth
+  subgraph UI_and_Auth[UI &amp; Access Control]
+    AdminUI[Admin UI]
+    Auth[Auth: JWT + Basic + OIDC]
+    Policy[OPA Policies\n(PII/XSS Filters, RBAC)]
+  end
+
+  %% Gateway Core
+  subgraph Core[Gateway Core]
+    Registry[MCP Registry\n(Tools · Prompts · Resources)]
+    Proto[Protocol Conversion\n(JSON-RPC, HTTP, WS, SSE, stdio)]
+    Fed[Federation Manager\n(Auto-discovery, Failover, Namespacing)]
+    Rate[Rate Limiting / QoS]
+    Obs[Observability\n(Prometheus, Phoenix traces)]
+    Health[Healthchecks]
+  end
+
+  %% Services layer
+  subgraph Services[Service Layer]
+    ToolSvc[Tool Service]
+    ResSvc[Resource Service]
+    PromptSvc[Prompt Service]
+    ServerSvc[Virtual Server Service]
+  end
+
+  %% Persistence & Cache
+  subgraph Persistence[Persistence]
+    DB[(SQL DB via SQLAlchemy)]
+  end
+  subgraph Cache[Cache]
+    Redis[(Redis / In-memory)]
+  end
+
+  %% External Systems (Oil & Gas)
+  subgraph OGSys[Enterprise &amp; Field Systems]
+    subgraph OT[OT / Field]
+      SCADA[SCADA/PLC via\nOPC UA · MQTT · Ignition]
+      EFM[EFM / Flow Computers\n(ROCs, OMNI, Daniels)]
+      Hist[Historians\n(PI System, Canary)]
+      Edge[Edge Gateways\n(Kepware, HiveMQ, AWS IoT)]
+    end
+    subgraph IT[IT / Enterprise]
+      ERP[SAP S/4HANA / JDE]
+      Maint[Maximo / ServiceNow]
+      PA[Production Accounting\n(Peloton ProdView, Avocet, FLOWCAL)]
+      LIMS[LIMS / Lab]
+      Docs[Well/Facility DBs\n(WellView, OpenWells, Geo databases)]
+    end
+    subgraph Data[Cloud &amp; Data]
+      Lake[Data Lake/Lakehouse\n(S3, ADLS, Delta)]
+      Stream[Streams\n(Kafka, Kinesis, Pulsar)]
+      ML[Model Serving\n(AWS SageMaker, Bedrock, vLLM/Ollama)]
+      Market[Market/Reg Data\n(EIA, AER DDS, CER, ISO feeds)]
+    end
+  end
+
+  %% Adapters & Federation
+  subgraph Adapters[Adapters &amp; Wrapped APIs]
+    RESTWrap[REST/Function Wrappers\n(JSON-Schema validated)]
+    MCPServers[External MCP Servers\n(custom, OSS)]
+  end
+
+  %% Flows
+  Clients -->|JSON-RPC / WS / SSE / stdio| Proto
+  AdminUI --> Registry
+  Auth --> Core
+  Policy --> Core
+
+  Core --> Proto
+  Core --> Fed
+  Core --> Rate
+  Core --> Obs
+  Core --> Health
+
+  Core --> ToolSvc
+  Core --> ResSvc
+  Core --> PromptSvc
+  Core --> ServerSvc
+
+  ToolSvc --> DB
+  ResSvc --> DB
+  PromptSvc --> DB
+  ServerSvc --> DB
+
+  Core --> Redis
+
+  %% Federation & Tool ingress
+  Fed --> MCPServers
+  RESTWrap --> ToolSvc
+  MCPServers --> ToolSvc
+
+  %% Domain systems surfaced as tools/resources
+  RESTWrap --> SCADA
+  RESTWrap --> EFM
+  RESTWrap --> Hist
+  RESTWrap --> ERP
+  RESTWrap --> Maint
+  RESTWrap --> PA
+  RESTWrap --> LIMS
+  RESTWrap --> Docs
+  RESTWrap --> Lake
+  RESTWrap --> Stream
+  RESTWrap --> ML
+  RESTWrap --> Market
+
+  %% Orchestrators also act as clients and tools
+  Orchestrators --> Proto
+  Orchestrators -. expose as tools .-> MCPServers
                 </div>
             </div>
             <div style="margin-top: 1.5rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; color: #34495e; font-size: 0.9rem;">
