@@ -336,40 +336,107 @@
             <p style="margin-bottom: 1.5rem; color: #7f8c8d;">Below is a Mermaid diagram modeled after IBM's MCP Context Forge reference, adapted for an upstream oil & gas environment (SCADA, measurement, production accounting, maintenance, and market data).</p>
             <div class="mermaid-container">
                 <pre class="mermaid">
-flowchart LR
-    Clients[Clients] --> Gateway[MCP Gateway]
-    Gateway --> Systems[Oil Gas Systems]
-    
-    subgraph C[Client Layer]
-        C1[Claude Desktop]
-        C2[VS Code]
-        C3[Jupyter]
-        C4[n8n]
+graph TD
+    subgraph Clients
+        IDE[IDE Assistants]
+        Notebooks[Jupyter/VS Code]
+        Chat[OpenWebUI]
+        Orchestrators[n8n/Airflow]
+        BI[Power BI/Grafana]
+        Agents[LangChain/CrewAI]
     end
-    
-    subgraph G[Gateway Core]
-        G1[Auth]
-        G2[Registry]
-        G3[Protocol]
-        G4[Federation]
+
+    subgraph UI_and_Auth
+        UI[Admin UI]
+        Auth[Auth JWT/OIDC]
+        Policy[OPA Policies]
+        UI --> Core
+        Auth --> Core
+        Policy --> Core
     end
-    
-    subgraph S[Systems]
-        S1[SCADA]
-        S2[PI Historian]
-        S3[SAP]
-        S4[FLOWCAL]
+
+    subgraph Gateway_Core
+        Core[MCP Gateway Core]
+        Registry[MCP Registry]
+        Protocol[Protocol Conversion]
+        Federation[Federation Manager]
+        Transports[HTTP/WS/SSE/stdio]
+        Core --> Registry
+        Core --> Protocol
+        Core --> Federation
+        Core --> Transports
     end
-    
-    C1 --> Gateway
-    C2 --> Gateway
-    C3 --> Gateway
-    C4 --> Gateway
-    
-    Gateway --> S1
-    Gateway --> S2
-    Gateway --> S3
-    Gateway --> S4
+
+    subgraph Services
+        Tools[Tool Service]
+        Resources[Resource Service]
+        Prompts[Prompt Service]
+        Servers[Server Service]
+        Core --> Tools
+        Core --> Resources
+        Core --> Prompts
+        Core --> Servers
+    end
+
+    subgraph OT_Field
+        SCADA[SCADA/PLC OPC UA]
+        EFM[Flow Computers]
+        Historians[PI System/Canary]
+        Edge[Kepware/HiveMQ]
+    end
+
+    subgraph IT_Enterprise
+        ERP[SAP S/4HANA]
+        Maint[Maximo]
+        PA[FLOWCAL/ProdView]
+        LIMS[Lab Systems]
+        Docs[WellView/OpenWells]
+    end
+
+    subgraph Cloud_Data
+        Lake[Data Lake S3/ADLS]
+        Stream[Kafka/Kinesis]
+        ML[SageMaker/Bedrock]
+        Market[EIA/AER Data]
+    end
+
+    subgraph Persistence
+        DB[SQL Database]
+        Cache[Redis Cache]
+        Tools --> DB
+        Resources --> DB
+        Prompts --> DB
+        Servers --> DB
+        Core --> Cache
+    end
+
+    subgraph Adapters
+        REST[REST Wrappers]
+        MCP[MCP Servers]
+        Federation --> REST
+        Federation --> MCP
+    end
+
+    IDE --> Protocol
+    Notebooks --> Protocol
+    Chat --> Protocol
+    Agents --> Protocol
+    BI --> Protocol
+    Orchestrators --> Protocol
+
+    REST --> SCADA
+    REST --> EFM
+    REST --> Historians
+    REST --> Edge
+    REST --> ERP
+    REST --> Maint
+    REST --> PA
+    REST --> LIMS
+    REST --> Docs
+    REST --> Lake
+    REST --> Stream
+    REST --> ML
+    REST --> Market
                 </pre>
             </div>
             <div style="margin-top: 1.5rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; color: #34495e; font-size: 0.9rem;">
