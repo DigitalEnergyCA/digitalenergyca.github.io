@@ -337,127 +337,24 @@
             <div class="mermaid-container">
                 <!-- Diagram -->
                 <div class="mermaid">
-flowchart TD
-  %% Clients / Consumers
-  subgraph Clients[Clients and Agent Runtimes]
-    IDE[IDE Assistants<br/>Claude Desktop, Copilot, Continue, Cline]
-    Notebooks[Jupyter / VS Code]
-    Chat[OpenWebUI / Internal Chat]
-    Orchestrators[n8n / Airflow / Dagster]
-    BI[Power BI / Grafana]
-    Agents[LangChain / LangGraph / CrewAI / SK]
-  end
-
-  %% UI and Auth
-  subgraph UI_and_Auth[UI and Access Control]
-    AdminUI[Admin UI]
-    Auth[Auth: JWT + Basic + OIDC]
-    Policy[OPA Policies<br/>PII/XSS Filters, RBAC]
-  end
-
-  %% Gateway Core
-  subgraph Core[Gateway Core]
-    Registry[MCP Registry<br/>Tools · Prompts · Resources]
-    Proto[Protocol Conversion<br/>JSON-RPC, HTTP, WS, SSE, stdio]
-    Fed[Federation Manager<br/>Auto-discovery, Failover, Namespacing]
-    Rate[Rate Limiting / QoS]
-    Obs[Observability<br/>Prometheus, Phoenix traces]
-    Health[Healthchecks]
-  end
-
-  %% Services layer
-  subgraph Services[Service Layer]
-    ToolSvc[Tool Service]
-    ResSvc[Resource Service]
-    PromptSvc[Prompt Service]
-    ServerSvc[Virtual Server Service]
-  end
-
-  %% Persistence and Cache
-  subgraph Persistence[Persistence]
-    DB[(SQL DB via SQLAlchemy)]
-  end
-  subgraph Cache[Cache]
-    Redis[(Redis / In-memory)]
-  end
-
-  %% Enterprise and Field Systems
-  subgraph OGSys[Enterprise and Field Systems]
-    subgraph OT[OT / Field]
-      SCADA[SCADA/PLC via<br/>OPC UA · MQTT · Ignition]
-      EFM[EFM / Flow Computers<br/>ROCs, OMNI, Daniels]
-      Hist[Historians<br/>PI System, Canary]
-      Edge[Edge Gateways<br/>Kepware, HiveMQ, AWS IoT]
-    end
-    subgraph IT[IT / Enterprise]
-      ERP[SAP S/4HANA / JDE]
-      Maint[Maximo / ServiceNow]
-      PA[Production Accounting<br/>Peloton ProdView, Avocet, FLOWCAL]
-      LIMS[LIMS / Lab]
-      Docs[Well/Facility DBs<br/>WellView, OpenWells, Geo databases]
-    end
-    subgraph Data[Cloud and Data]
-      Lake[Data Lake/Lakehouse<br/>S3, ADLS, Delta]
-      Stream[Streams<br/>Kafka, Kinesis, Pulsar]
-      ML[Model Serving<br/>AWS SageMaker, Bedrock, vLLM/Ollama]
-      Market[Market/Reg Data<br/>EIA, AER DDS, CER, ISO feeds]
-    end
-  end
-
-  %% Adapters and Federation
-  subgraph Adapters[Adapters and Wrapped APIs]
-    RESTWrap[REST/Function Wrappers<br/>JSON-Schema validated]
-    MCPServers[External MCP Servers<br/>custom, OSS]
-  end
-
-  %% Flows
-  IDE --> Proto
-  Notebooks --> Proto
-  Chat --> Proto
-  Agents --> Proto
-  BI --> Proto
-  Orchestrators --> Proto
-
-  AdminUI --> Registry
-  Auth --> Core
-  Policy --> Core
-
-  Core --> Proto
-  Core --> Fed
-  Core --> Rate
-  Core --> Obs
-  Core --> Health
-
-  Core --> ToolSvc
-  Core --> ResSvc
-  Core --> PromptSvc
-  Core --> ServerSvc
-
-  ToolSvc --> DB
-  ResSvc --> DB
-  PromptSvc --> DB
-  ServerSvc --> DB
-
-  Core --> Redis
-
-  Fed --> MCPServers
-  RESTWrap --> ToolSvc
-  MCPServers --> ToolSvc
-
-  RESTWrap --> SCADA
-  RESTWrap --> EFM
-  RESTWrap --> Hist
-  RESTWrap --> ERP
-  RESTWrap --> Maint
-  RESTWrap --> PA
-  RESTWrap --> LIMS
-  RESTWrap --> Docs
-  RESTWrap --> Lake
-  RESTWrap --> Stream
-  RESTWrap --> ML
-  RESTWrap --> Market
-
-  Orchestrators -. expose as tools .-> MCPServers
+graph TD
+    A[Clients] --> B[MCP Gateway]
+    B --> C[Oil and Gas Systems]
+    
+    A1[IDE Assistants] --> A
+    A2[Notebooks] --> A
+    A3[Chat] --> A
+    A4[Orchestrators] --> A
+    
+    B1[Auth] --> B
+    B2[Registry] --> B
+    B3[Protocol] --> B
+    B4[Federation] --> B
+    
+    C1[SCADA] --> C
+    C2[Historians] --> C
+    C3[ERP] --> C
+    C4[Production] --> C
                 </div>
             </div>
             <div style="margin-top: 1.5rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; color: #34495e; font-size: 0.9rem;">
