@@ -336,51 +336,97 @@
             <p style="margin-bottom: 1.5rem; color: #7f8c8d;">Below is a Mermaid diagram modeled after IBM's MCP Context Forge reference, adapted for an upstream oil & gas environment (SCADA, data historians, measurement systems, maintenance systems, and market data).</p>
             <div class="mermaid-container">
                 <pre class="mermaid">
-flowchart TD
-    subgraph clients [Client Applications]
-        A1[Claude Desktop]
-        A2[VS Code]
-        A3[Jupyter]
-        A4[n8n]
-        A5[Power BI]
+graph TD
+    subgraph Clients
+        IDE[🖥️ IDE Assistants]
+        Notebooks[📓 Jupyter/VS Code]
+        Chat[💬 OpenWebUI/Chat]
+        Orchestrators[🔄 n8n/Airflow]
+        BI[📊 Power BI/Grafana]
+        Agents[🤖 LangChain/CrewAI]
+        IDE --> Core
+        Notebooks --> Core
+        Chat --> Core
+        Orchestrators --> Core
+        BI --> Core
+        Agents --> Core
     end
-    
-    subgraph gateway [MCP Gateway]
-        B1[Authentication]
-        B2[Protocol Handler]
-        B3[Tool Registry]
-        B4[Federation Manager]
+
+    subgraph UI_and_Auth
+        UI[🖥️ Admin UI]
+        Auth[🔐 Auth - JWT and Basic]
+        Policy[🛡️ OPA Policies]
+        UI --> Core
+        Auth --> Core
+        Policy --> Core
     end
-    
-    subgraph field [Field Systems]
-        C1[SCADA/OPC UA]
-        C2[Data Historian]
-        C3[Flow Computers]
-        C4[Edge Gateways]
+
+    subgraph Gateway_Core
+        Core[🚪 MCP Gateway Core]
+        Protocol[📡 Protocol - Init Ping Completion]
+        Federation[🌐 Federation Manager]
+        Transports[🔀 Transports - HTTP WS SSE Stdio]
+        Core --> Protocol
+        Core --> Federation
+        Core --> Transports
     end
-    
-    subgraph enterprise [Enterprise Systems]
-        D1[SAP ERP]
-        D2[Maintenance System]
-        D3[Measurement System]
-        D4[Lab LIMS]
+
+    subgraph Services
+        Tools[🧰 Tool Service]
+        Resources[📁 Resource Service]
+        Prompts[📝 Prompt Service]
+        Servers[🧩 Server Service]
+        Core --> Tools
+        Core --> Resources
+        Core --> Prompts
+        Core --> Servers
     end
-    
-    subgraph cloud [Cloud & Analytics]
-        E1[Data Lake]
-        E2[Kafka Streams]
-        E3[ML Models]
-        E4[Market Data]
+
+    subgraph OT_Field
+        SCADA[⚙️ SCADA/PLC - OPC UA]
+        Historian[📈 Data Historian]
+        EFM[⚡ Flow Computers/EFM]
+        Edge[🌐 Edge Gateways]
+        Federation --> SCADA
+        Federation --> Historian
+        Federation --> EFM
+        Federation --> Edge
     end
-    
-    clients --> gateway
-    gateway --> field
-    gateway --> enterprise
-    gateway --> cloud
-    
-    B2 -.-> B1
-    B2 -.-> B3
-    B2 -.-> B4
+
+    subgraph IT_Enterprise
+        ERP[💼 ERP Systems]
+        Maintenance[🔧 Maintenance System]
+        Measurement[📊 Measurement System]
+        LIMS[🧪 Lab LIMS]
+        Federation --> ERP
+        Federation --> Maintenance
+        Federation --> Measurement
+        Federation --> LIMS
+    end
+
+    subgraph Cloud_Data
+        Lake[💾 Data Lake]
+        Stream[🌊 Kafka Streams]
+        ML[🤖 ML Models]
+        Market[📈 Market Data]
+        Federation --> Lake
+        Federation --> Stream
+        Federation --> ML
+        Federation --> Market
+    end
+
+    subgraph Persistence
+        DB[💾 Database - SQLAlchemy]
+        Tools --> DB
+        Resources --> DB
+        Prompts --> DB
+        Servers --> DB
+    end
+
+    subgraph Caching
+        Cache[⚡ Cache - Redis or Memory]
+        Core --> Cache
+    end
                 </pre>
             </div>
             <div style="margin-top: 1.5rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; color: #34495e; font-size: 0.9rem;">
