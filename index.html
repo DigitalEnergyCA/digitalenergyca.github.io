@@ -334,50 +334,51 @@
         <div class="architecture-section">
             <h2>MCP Gateway for Oil & Gas — Reference Architecture</h2>
             <p style="margin-bottom: 1.5rem; color: #7f8c8d;">Below is a Mermaid diagram modeled after IBM's MCP Context Forge reference, adapted for an upstream oil & gas environment (SCADA, data historians, measurement systems, maintenance systems, and market data).</p>
-            <div class="mermaid-container">
-                <pre class="mermaid">
-graph TD
-    subgraph UI_and_Auth
-        UI[🖥️ Admin UI]
-        Auth[🔐 Auth - JWT and Basic]
-        UI --> Core
-        Auth --> Core
-    end
-
-    subgraph Gateway_Core
-        Core[🚪 MCP Gateway Core]
-        Protocol[📡 Protocol - Init Ping Completion]
-        Federation[🌐 Federation Manager]
-        Transports[🔀 Transports - HTTP WS SSE Stdio]
-        Core --> Protocol
-        Core --> Federation
-        Core --> Transports
-    end
-
-    subgraph Services
-        Tools[🧰 Tool Service]
-        Resources[📁 Resource Service]
-        Prompts[📝 Prompt Service]
-        Servers[🧩 Server Service]
-        Core --> Tools
-        Core --> Resources
-        Core --> Prompts
-        Core --> Servers
-    end
-
-    subgraph Persistence
-        DB[💾 Database - SQLAlchemy]
-        Tools --> DB
-        Resources --> DB
-        Prompts --> DB
-        Servers --> DB
-    end
-
-    subgraph Caching
-        Cache[⚡ Cache - Redis or Memory]
-        Core --> Cache
-    end
-                </pre>
+            <div style="background: #f8f9fa; border-radius: 8px; padding: 2rem; text-align: center;">
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; max-width: 1000px; margin: 0 auto;">
+                    
+                    <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 2px solid #3498db;">
+                        <h4 style="color: #2c3e50; margin-bottom: 1rem;">🖥️ Client Applications</h4>
+                        <div style="font-size: 0.9rem; color: #7f8c8d;">
+                            • Claude Desktop<br/>
+                            • VS Code Extensions<br/>
+                            • Jupyter Notebooks<br/>
+                            • n8n Workflows<br/>
+                            • Power BI / Grafana
+                        </div>
+                    </div>
+                    
+                    <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 2px solid #e74c3c;">
+                        <h4 style="color: #2c3e50; margin-bottom: 1rem;">🚪 MCP Gateway Core</h4>
+                        <div style="font-size: 0.9rem; color: #7f8c8d;">
+                            • Authentication & Auth<br/>
+                            • Protocol Handling<br/>
+                            • Tool Registry<br/>
+                            • Federation Manager<br/>
+                            • Transport Layer
+                        </div>
+                    </div>
+                    
+                    <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 2px solid #27ae60;">
+                        <h4 style="color: #2c3e50; margin-bottom: 1rem;">⚙️ Oil & Gas Systems</h4>
+                        <div style="font-size: 0.9rem; color: #7f8c8d;">
+                            • SCADA / PLC Systems<br/>
+                            • Data Historians<br/>
+                            • ERP Systems<br/>
+                            • Maintenance Systems<br/>
+                            • Measurement Systems
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <div style="margin-top: 2rem; display: flex; justify-content: center; align-items: center; gap: 2rem;">
+                    <span style="color: #3498db; font-weight: bold;">Clients</span>
+                    <span style="font-size: 1.5rem;">→</span>
+                    <span style="color: #e74c3c; font-weight: bold;">MCP Gateway</span>
+                    <span style="font-size: 1.5rem;">→</span>
+                    <span style="color: #27ae60; font-weight: bold;">Systems</span>
+                </div>
             </div>
             <div style="margin-top: 1.5rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; color: #34495e; font-size: 0.9rem;">
                 <strong>Notes:</strong><br/>
