@@ -337,86 +337,58 @@
             <div class="mermaid-container">
                 <pre class="mermaid">
 graph TD
-    subgraph Clients
-        IDE[🖥️ IDE Assistants]
-        Notebooks[📓 Jupyter/VS Code]
-        Chat[💬 OpenWebUI/Chat]
-        Orchestrators[🔄 n8n/Airflow]
-        BI[📊 Power BI/Grafana]
-        Agents[🤖 LangChain/CrewAI]
-        IDE --> Core
-        Notebooks --> Core
-        Chat --> Core
-        Orchestrators --> Core
-        BI --> Core
-        Agents --> Core
-    end
-
     subgraph UI_and_Auth
-        UI[🖥️ Admin UI]
-        Auth[🔐 Auth - JWT and Basic]
-        Policy[🛡️ OPA Policies]
+        UI[Admin UI]
+        Auth[Auth JWT and Basic]
         UI --> Core
         Auth --> Core
-        Policy --> Core
     end
 
     subgraph Gateway_Core
-        Core[🚪 MCP Gateway Core]
-        Protocol[📡 Protocol - Init Ping Completion]
-        Federation[🌐 Federation Manager]
-        Transports[🔀 Transports - HTTP WS SSE Stdio]
+        Core[MCP Gateway Core]
+        Protocol[Protocol Init Ping Completion]
+        Federation[Federation Manager]
+        Transports[Transports HTTP WS SSE Stdio]
         Core --> Protocol
         Core --> Federation
         Core --> Transports
     end
 
     subgraph Services
-        Tools[🧰 Tool Service]
-        Resources[📁 Resource Service]
-        Prompts[📝 Prompt Service]
-        Servers[🧩 Server Service]
+        Tools[Tool Service]
+        Resources[Resource Service]
+        Prompts[Prompt Service]
+        Servers[Server Service]
         Core --> Tools
         Core --> Resources
         Core --> Prompts
         Core --> Servers
     end
 
-    subgraph OT_Field
-        SCADA[⚙️ SCADA/PLC - OPC UA]
-        Historian[📈 Data Historian]
-        EFM[⚡ Flow Computers/EFM]
-        Edge[🌐 Edge Gateways]
+    subgraph OT_Systems
+        SCADA[SCADA PLC OPC UA]
+        Historian[Data Historian]
+        EFM[Flow Computers EFM]
+        Edge[Edge Gateways]
         Federation --> SCADA
         Federation --> Historian
         Federation --> EFM
         Federation --> Edge
     end
 
-    subgraph IT_Enterprise
-        ERP[💼 ERP Systems]
-        Maintenance[🔧 Maintenance System]
-        Measurement[📊 Measurement System]
-        LIMS[🧪 Lab LIMS]
+    subgraph IT_Systems
+        ERP[ERP Systems]
+        Maintenance[Maintenance System]
+        Measurement[Measurement System]
+        LIMS[Lab LIMS]
         Federation --> ERP
         Federation --> Maintenance
         Federation --> Measurement
         Federation --> LIMS
     end
 
-    subgraph Cloud_Data
-        Lake[💾 Data Lake]
-        Stream[🌊 Kafka Streams]
-        ML[🤖 ML Models]
-        Market[📈 Market Data]
-        Federation --> Lake
-        Federation --> Stream
-        Federation --> ML
-        Federation --> Market
-    end
-
     subgraph Persistence
-        DB[💾 Database - SQLAlchemy]
+        DB[Database SQLAlchemy]
         Tools --> DB
         Resources --> DB
         Prompts --> DB
@@ -424,7 +396,7 @@ graph TD
     end
 
     subgraph Caching
-        Cache[⚡ Cache - Redis or Memory]
+        Cache[Cache Redis or Memory]
         Core --> Cache
     end
                 </pre>
