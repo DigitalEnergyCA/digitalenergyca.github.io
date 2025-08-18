@@ -567,25 +567,25 @@ curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..." \
                         <td><strong>Data Historian reads</strong></td>
                         <td>Time-series data</td>
                         <td>Historical queries, trend analysis, archive search</td>
-                        <td><a href="#" style="color: #3498db;">pi-tools.json</a></td>
+                        <td><a href="#" style="color: #3498db;">historian-tools.json</a></td>
                     </tr>
                     <tr>
                         <td><strong>Measurement System</strong></td>
                         <td>Production accounting</td>
                         <td>Gas/liquid calculations, volume corrections, reports</td>
-                        <td><a href="#" style="color: #3498db;">flowcal-tools.json</a></td>
+                        <td><a href="#" style="color: #3498db;">measurement-tools.json</a></td>
                     </tr>
                     <tr>
                         <td><strong>Maintenance System</strong></td>
                         <td>Maintenance management</td>
                         <td>Create work orders, update status, assign resources</td>
-                        <td><a href="#" style="color: #3498db;">maximo-tools.json</a></td>
+                        <td><a href="#" style="color: #3498db;">maintenance-tools.json</a></td>
                     </tr>
                     <tr>
-                        <td><strong>EIA data pulls</strong></td>
+                        <td><strong>Market data feeds</strong></td>
                         <td>Market data wrapper</td>
                         <td>Price feeds, inventory reports, regulatory filings</td>
-                        <td><a href="#" style="color: #3498db;">eia-tools.json</a></td>
+                        <td><a href="#" style="color: #3498db;">market-tools.json</a></td>
                     </tr>
                 </tbody>
             </table>
@@ -621,7 +621,7 @@ curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..." \
         - "historian-mcp-server"
     - name: "corporate"
       servers:
-        - "sap-mcp-server"
+        - "erp-mcp-server"
         - "maintenance-mcp-server"
   discovery:
     auto_register: true
