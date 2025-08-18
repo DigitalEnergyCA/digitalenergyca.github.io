@@ -337,68 +337,24 @@
             <div class="mermaid-container">
                 <pre class="mermaid">
 graph TD
-    subgraph UI_and_Auth
-        UI[Admin UI]
-        Auth[Auth JWT and Basic]
-        UI --> Core
-        Auth --> Core
-    end
-
-    subgraph Gateway_Core
-        Core[MCP Gateway Core]
-        Protocol[Protocol Init Ping Completion]
-        Federation[Federation Manager]
-        Transports[Transports HTTP WS SSE Stdio]
-        Core --> Protocol
-        Core --> Federation
-        Core --> Transports
-    end
-
-    subgraph Services
-        Tools[Tool Service]
-        Resources[Resource Service]
-        Prompts[Prompt Service]
-        Servers[Server Service]
-        Core --> Tools
-        Core --> Resources
-        Core --> Prompts
-        Core --> Servers
-    end
-
-    subgraph OT_Systems
-        SCADA[SCADA PLC OPC UA]
-        Historian[Data Historian]
-        EFM[Flow Computers EFM]
-        Edge[Edge Gateways]
-        Federation --> SCADA
-        Federation --> Historian
-        Federation --> EFM
-        Federation --> Edge
-    end
-
-    subgraph IT_Systems
-        ERP[ERP Systems]
-        Maintenance[Maintenance System]
-        Measurement[Measurement System]
-        LIMS[Lab LIMS]
-        Federation --> ERP
-        Federation --> Maintenance
-        Federation --> Measurement
-        Federation --> LIMS
-    end
-
-    subgraph Persistence
-        DB[Database SQLAlchemy]
-        Tools --> DB
-        Resources --> DB
-        Prompts --> DB
-        Servers --> DB
-    end
-
-    subgraph Caching
-        Cache[Cache Redis or Memory]
-        Core --> Cache
-    end
+    A[Client Applications] --> B[MCP Gateway]
+    B --> C[Oil and Gas Systems]
+    
+    A1[Claude Desktop] --> A
+    A2[VS Code] --> A
+    A3[Jupyter] --> A
+    A4[n8n] --> A
+    
+    B1[Authentication] --> B
+    B2[Protocol Handler] --> B
+    B3[Tool Registry] --> B
+    B4[Federation] --> B
+    
+    C1[SCADA Systems] --> C
+    C2[Data Historian] --> C
+    C3[ERP Systems] --> C
+    C4[Maintenance] --> C
+    C5[Measurement] --> C
                 </pre>
             </div>
             <div style="margin-top: 1.5rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; color: #34495e; font-size: 0.9rem;">
