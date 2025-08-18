@@ -334,51 +334,84 @@
         <div class="architecture-section">
             <h2>MCP Gateway for Oil & Gas — Reference Architecture</h2>
             <p style="margin-bottom: 1.5rem; color: #7f8c8d;">Below is an architecture diagram modeled after IBM's MCP Context Forge reference, adapted for an upstream oil & gas environment (SCADA, data historians, measurement systems, maintenance systems, and market data).</p>
-            <div style="background: #f8f9fa; border-radius: 8px; padding: 2rem; text-align: center;">
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; max-width: 1000px; margin: 0 auto;">
+            <div style="background: #f8f9fa; border-radius: 8px; padding: 2rem; overflow-x: auto;">
+                <svg width="1000" height="600" viewBox="0 0 1000 600" style="max-width: 100%; height: auto;">
+                    <!-- Background -->
+                    <rect width="1000" height="600" fill="#fefefe" stroke="none"/>
                     
-                    <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 2px solid #3498db;">
-                        <h4 style="color: #2c3e50; margin-bottom: 1rem;">🖥️ Client Applications</h4>
-                        <div style="font-size: 0.9rem; color: #7f8c8d;">
-                            • Claude Desktop<br/>
-                            • VS Code Extensions<br/>
-                            • Jupyter Notebooks<br/>
-                            • n8n Workflows<br/>
-                            • Power BI / Grafana
-                        </div>
-                    </div>
+                    <!-- Client Applications Group -->
+                    <g>
+                        <rect x="50" y="50" width="200" height="150" rx="8" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" stroke-dasharray="5,3"/>
+                        <text x="150" y="75" text-anchor="middle" font-family="Comic Sans MS, cursive" font-size="14" font-weight="bold" fill="#1976d2">Client Applications</text>
+                        <text x="60" y="100" font-family="Comic Sans MS, cursive" font-size="11" fill="#333">• Claude Desktop</text>
+                        <text x="60" y="120" font-family="Comic Sans MS, cursive" font-size="11" fill="#333">• VS Code</text>
+                        <text x="60" y="140" font-family="Comic Sans MS, cursive" font-size="11" fill="#333">• Jupyter</text>
+                        <text x="60" y="160" font-family="Comic Sans MS, cursive" font-size="11" fill="#333">• n8n</text>
+                        <text x="60" y="180" font-family="Comic Sans MS, cursive" font-size="11" fill="#333">• Power BI</text>
+                    </g>
                     
-                    <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 2px solid #e74c3c;">
-                        <h4 style="color: #2c3e50; margin-bottom: 1rem;">🚪 MCP Gateway Core</h4>
-                        <div style="font-size: 0.9rem; color: #7f8c8d;">
-                            • Authentication & Auth<br/>
-                            • Protocol Handling<br/>
-                            • Tool Registry<br/>
-                            • Federation Manager<br/>
-                            • Transport Layer
-                        </div>
-                    </div>
+                    <!-- MCP Gateway Core -->
+                    <g>
+                        <rect x="400" y="50" width="200" height="200" rx="8" fill="#fff3e0" stroke="#f57c00" stroke-width="3" stroke-dasharray="3,2"/>
+                        <text x="500" y="75" text-anchor="middle" font-family="Comic Sans MS, cursive" font-size="14" font-weight="bold" fill="#f57c00">MCP Gateway Core</text>
+                        <text x="410" y="100" font-family="Comic Sans MS, cursive" font-size="11" fill="#333">• Authentication</text>
+                        <text x="410" y="120" font-family="Comic Sans MS, cursive" font-size="11" fill="#333">• Protocol Handler</text>
+                        <text x="410" y="140" font-family="Comic Sans MS, cursive" font-size="11" fill="#333">• Tool Registry</text>
+                        <text x="410" y="160" font-family="Comic Sans MS, cursive" font-size="11" fill="#333">• Federation Manager</text>
+                        <text x="410" y="180" font-family="Comic Sans MS, cursive" font-size="11" fill="#333">• Transport Layer</text>
+                        <text x="410" y="200" font-family="Comic Sans MS, cursive" font-size="11" fill="#333">• Cache & Storage</text>
+                    </g>
                     
-                    <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 2px solid #27ae60;">
-                        <h4 style="color: #2c3e50; margin-bottom: 1rem;">⚙️ Oil & Gas Systems</h4>
-                        <div style="font-size: 0.9rem; color: #7f8c8d;">
-                            • SCADA / PLC Systems<br/>
-                            • Data Historians<br/>
-                            • ERP Systems<br/>
-                            • Maintenance Systems<br/>
-                            • Measurement Systems
-                        </div>
-                    </div>
+                    <!-- Oil & Gas Systems -->
+                    <g>
+                        <rect x="750" y="50" width="200" height="200" rx="8" fill="#e8f5e8" stroke="#388e3c" stroke-width="2" stroke-dasharray="4,2"/>
+                        <text x="850" y="75" text-anchor="middle" font-family="Comic Sans MS, cursive" font-size="14" font-weight="bold" fill="#388e3c">Oil &amp; Gas Systems</text>
+                        <text x="760" y="100" font-family="Comic Sans MS, cursive" font-size="11" fill="#333">• SCADA/PLC</text>
+                        <text x="760" y="120" font-family="Comic Sans MS, cursive" font-size="11" fill="#333">• Data Historians</text>
+                        <text x="760" y="140" font-family="Comic Sans MS, cursive" font-size="11" fill="#333">• ERP Systems</text>
+                        <text x="760" y="160" font-family="Comic Sans MS, cursive" font-size="11" fill="#333">• Maintenance</text>
+                        <text x="760" y="180" font-family="Comic Sans MS, cursive" font-size="11" fill="#333">• Measurement</text>
+                        <text x="760" y="200" font-family="Comic Sans MS, cursive" font-size="11" fill="#333">• Lab LIMS</text>
+                        <text x="760" y="220" font-family="Comic Sans MS, cursive" font-size="11" fill="#333">• Market Data</text>
+                    </g>
                     
-                </div>
-                
-                <div style="margin-top: 2rem; display: flex; justify-content: center; align-items: center; gap: 2rem;">
-                    <span style="color: #3498db; font-weight: bold;">Clients</span>
-                    <span style="font-size: 1.5rem;">→</span>
-                    <span style="color: #e74c3c; font-weight: bold;">MCP Gateway</span>
-                    <span style="font-size: 1.5rem;">→</span>
-                    <span style="color: #27ae60; font-weight: bold;">Systems</span>
-                </div>
+                    <!-- Field Systems -->
+                    <g>
+                        <rect x="750" y="300" width="200" height="120" rx="8" fill="#fce4ec" stroke="#c2185b" stroke-width="2" stroke-dasharray="6,2"/>
+                        <text x="850" y="325" text-anchor="middle" font-family="Comic Sans MS, cursive" font-size="14" font-weight="bold" fill="#c2185b">Field Systems</text>
+                        <text x="760" y="350" font-family="Comic Sans MS, cursive" font-size="11" fill="#333">• Flow Computers</text>
+                        <text x="760" y="370" font-family="Comic Sans MS, cursive" font-size="11" fill="#333">• Edge Gateways</text>
+                        <text x="760" y="390" font-family="Comic Sans MS, cursive" font-size="11" fill="#333">• IoT Sensors</text>
+                    </g>
+                    
+                    <!-- Cloud Services -->
+                    <g>
+                        <rect x="400" y="350" width="200" height="120" rx="8" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" stroke-dasharray="4,4"/>
+                        <text x="500" y="375" text-anchor="middle" font-family="Comic Sans MS, cursive" font-size="14" font-weight="bold" fill="#7b1fa2">Cloud &amp; Analytics</text>
+                        <text x="410" y="400" font-family="Comic Sans MS, cursive" font-size="11" fill="#333">• Data Lake</text>
+                        <text x="410" y="420" font-family="Comic Sans MS, cursive" font-size="11" fill="#333">• ML Models</text>
+                        <text x="410" y="440" font-family="Comic Sans MS, cursive" font-size="11" fill="#333">• Stream Processing</text>
+                    </g>
+                    
+                    <!-- Hand-drawn style arrows -->
+                    <path d="M250 125 Q325 125 395 125" stroke="#666" stroke-width="2" fill="none" stroke-dasharray="2,3"/>
+                    <polygon points="395,125 385,120 385,130" fill="#666"/>
+                    
+                    <path d="M605 150 Q677 150 745 150" stroke="#666" stroke-width="2" fill="none" stroke-dasharray="2,3"/>
+                    <polygon points="745,150 735,145 735,155" fill="#666"/>
+                    
+                    <path d="M600 250 Q675 275 745 300" stroke="#666" stroke-width="2" fill="none" stroke-dasharray="2,3"/>
+                    <polygon points="745,300 735,295 740,305" fill="#666"/>
+                    
+                    <path d="M500 250 Q500 300 500 345" stroke="#666" stroke-width="2" fill="none" stroke-dasharray="2,3"/>
+                    <polygon points="500,345 495,335 505,335" fill="#666"/>
+                    
+                    <!-- Labels -->
+                    <text x="320" y="115" font-family="Comic Sans MS, cursive" font-size="10" fill="#666" transform="rotate(-5 320 115)">API Calls</text>
+                    <text x="670" y="140" font-family="Comic Sans MS, cursive" font-size="10" fill="#666" transform="rotate(2 670 140)">System Access</text>
+                    <text x="470" y="300" font-family="Comic Sans MS, cursive" font-size="10" fill="#666" transform="rotate(-3 470 300)">Analytics</text>
+                    
+                </svg>
             </div>
             <div style="margin-top: 1.5rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; color: #34495e; font-size: 0.9rem;">
                 <strong>Notes:</strong><br/>
